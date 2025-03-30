@@ -76,7 +76,7 @@ export default function CreateRoadmap() {
                 <Label htmlFor="title">Roadmap Title</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., CRISPR Gene Editing Fundamentals"
+                  placeholder="e.g., Data Science Roadmap"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
