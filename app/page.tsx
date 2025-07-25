@@ -7,22 +7,36 @@ import { Button } from "@/components/ui/button"
 import { PlusCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 
+// const connectDB = require("./db/connect");
+// connectDB();
+
 export default function Home() {
   const [loading, setLoading] = useState(true)
+  const [roadmaps, setRoadmaps] = useState([])
   const router = useRouter()
 
   useEffect(() => {
     // Simulate loading time for animation
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 3000)
+    // const timer = setTimeout(() => {
+    //   setLoading(false)
+    // }, 3000)
 
-    return () => clearTimeout(timer)
+    // return () => clearTimeout(timer)
+
+    const fetchData = async () => {
+      const res = await fetch("/api/roadmaps")
+      const data = await res.json()
+      setRoadmaps(data)
+      setLoading(false)
+    }
+
+    fetchData()
   }, [])
 
   const handleCreateNew = () => {
     router.push("/create")
   }
+  
 
   if (loading) {
     return <LoadingAnimation />
