@@ -22,17 +22,16 @@ export default function CreateRoadmap() {
   const [password, setPassword] = useState("")
   const [passwordError, setPasswordError] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Validate password
+  
     if (password !== "Harshu1234") {
       setPasswordError(true)
       return
     }
-
+  
     setIsSubmitting(true)
-
+  
     const newRoadmap = {
       id: uuidv4(),
       title,
@@ -43,10 +42,26 @@ export default function CreateRoadmap() {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     }
-
+  
+    // Save to localStorage
     createRoadmap(newRoadmap)
+  
+    // Save to MongoDB
+    try {
+      await fetch("/api/save-document", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRoadmap),
+      })
+    } catch (error) {
+      console.error("Failed to save roadmap to DB:", error)
+    }
+  
     router.push(`/roadmap/${newRoadmap.id}/edit`)
   }
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950">
